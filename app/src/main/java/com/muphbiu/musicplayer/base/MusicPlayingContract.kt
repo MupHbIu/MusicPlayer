@@ -1,6 +1,6 @@
 package com.muphbiu.musicplayer.base
 
-public interface MusicPlayingContract {
+interface MusicPlayingContract {
     interface View {
         fun showText(msg: String)
     }
@@ -11,6 +11,6 @@ public interface MusicPlayingContract {
     }
 
     interface Repository {
-
+        fun loadMessage(): String
     }
 }
