@@ -12,16 +12,16 @@ import kotlinx.android.synthetic.main.activity_music_playing.*
 class MusicPlayingActivity : AppCompatActivity(), MusicPlayingContract.View {
     private val TAG: String = "MusicPlayingActivity"
 
-    private var MusicPlayingPresenter: MusicPlayingContract.Presenter? = null
+    private var presenter: MusicPlayingContract.Presenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_music_playing)
 
-        txt1.text = "Default Text"
+        txt1.text = resources.getString(R.string.defStr)
         button.setOnClickListener {
-            MusicPlayingPresenter?.bntClicked() }
-        MusicPlayingPresenter = MusicPlayingPresenter(this)
+            presenter?.bntClicked() }
+        presenter = MusicPlayingPresenter(this, this)
 
         Log.d(TAG, "onCreate()")
     }
@@ -32,7 +32,7 @@ class MusicPlayingActivity : AppCompatActivity(), MusicPlayingContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        MusicPlayingPresenter?.onDestroy()
+        presenter?.onDestroy()
         Log.d(TAG, "onDestroy")
     }
 }
