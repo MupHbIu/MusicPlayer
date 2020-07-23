@@ -2,27 +2,25 @@ package com.muphbiu.musicplayer.presenters
 
 import android.content.Context
 import android.util.Log
-import com.muphbiu.musicplayer.R
-import com.muphbiu.musicplayer.base.MusicPlayingContract
-import com.muphbiu.musicplayer.data.MusicPlayingRepository
+import com.muphbiu.musicplayer.base.presenters.MusicPlayingPresenterInterface
+import com.muphbiu.musicplayer.base.views.MusicPlayingViewInterface
+import com.muphbiu.musicplayer.models.MusicPlayingModel
 
-class MusicPlayingPresenter(View: MusicPlayingContract.View, context: Context) : MusicPlayingContract.Presenter {
-    private val TAG: String = "MusicPlayingPresenter"
+class MusicPlayingPresenter(View: MusicPlayingViewInterface, context: Context) : MusicPlayingPresenterInterface {
+    private val tag: String = "MusicPlayingPresenter"
 
-    private var activity: MusicPlayingContract.View = View
-    private var repository: MusicPlayingContract.Repository = MusicPlayingRepository(context)
+    private var activity: MusicPlayingViewInterface = View
+    private var model: MusicPlayingModel = MusicPlayingModel(context)
 
     private var message: String = ""
 
     override fun bntClicked() {
-        // Get message from Repository (MusicPlayingContract.Repository)
-        message = repository.loadMessage()
+        message = model.loadMessage()
         activity.showText(message)
-        Log.d(TAG, "btnClicked")
+        Log.d(tag, "btnClicked")
     }
 
-    override fun onDestroy() {
-
-        Log.d(TAG, "onDestroy()")
+    override fun activityDestroyed() {
+        Log.d(tag, "activityDestroyed()")
     }
 }
