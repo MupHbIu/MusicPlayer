@@ -5,14 +5,14 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
-class DBHelper(
+class PlayingListDBHelper(
     context: Context?,
     name: String?,
     factory: SQLiteDatabase.CursorFactory?,
     version: Int
 ) : SQLiteOpenHelper(context, name, factory, version) {
 
-    private val tag = "DBHelper"
+    private val tag = "PlayingListDBHelper"
 
     override fun onCreate(p0: SQLiteDatabase?) {
         Log.d(tag, "onCreate() (DB)")

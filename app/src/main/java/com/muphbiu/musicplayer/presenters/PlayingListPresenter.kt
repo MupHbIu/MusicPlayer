@@ -1,7 +1,6 @@
 package com.muphbiu.musicplayer.presenters
 
 import android.content.Context
-import android.util.Log
 import com.muphbiu.musicplayer.base.presenters.PlayingListPresenterInterface
 import com.muphbiu.musicplayer.base.views.PlayingListViewInterface
 import com.muphbiu.musicplayer.data.Song
@@ -12,17 +11,20 @@ class PlayingListPresenter(View: PlayingListViewInterface, context: Context) : P
 
     private var activity: PlayingListViewInterface = View
     private var model: PlayingListModel = PlayingListModel(context)
+    //private var model2: StoreSongsDB = StoreSongsDB(context)
 
-    private var activitySongList = ""
-    private var modelSongList: List<Song> = mutableListOf()
+    private var songList : List<Song> = mutableListOf()
+    //private var modelSongList: List<Song> = mutableListOf()
 
     override fun activityOpened() {
-        modelSongList = model.loadPlayingList()
-        activitySongList = modelSongList.toString()
-        activity.showPlayingList(activitySongList)
+        songList = model.loadPlayingList()
+        if(songList != emptyList<Song>())
+            activity.showPlayingList(songList)
+        else
+            activity.showMessage("No songs")
     }
 
     override fun activityDestroyed() {
-        Log.d(tag, "activityDestroyed()")
+
     }
 }

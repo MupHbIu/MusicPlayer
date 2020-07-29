@@ -1,5 +1,7 @@
 package com.muphbiu.musicplayer.base.views
 
-interface MusicPlayingViewInterface {
+import com.muphbiu.musicplayer.base.BaseView
+
+interface MusicPlayingViewInterface : BaseView {
     fun showText(msg: String)
 }

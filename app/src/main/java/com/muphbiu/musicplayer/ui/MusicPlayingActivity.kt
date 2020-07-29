@@ -1,5 +1,6 @@
 package com.muphbiu.musicplayer.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -23,7 +24,11 @@ class MusicPlayingActivity : AppCompatActivity(),
 
         txt1.text = resources.getString(R.string.defStr)
         button.setOnClickListener {
-            presenter.bntClicked() }
+            presenter.bntClicked()
+        }
+        listBtn.setOnClickListener {
+            startActivity(Intent(this, PlayingListActivity::class.java))
+        }
 
         Log.d(tag, "onCreate()")
     }
@@ -32,9 +37,23 @@ class MusicPlayingActivity : AppCompatActivity(),
         txt1.text = msg
     }
 
+
+
     override fun onDestroy() {
         super.onDestroy()
         presenter.activityDestroyed()
         Log.d(tag, "onDestroy")
+    }
+
+    override fun showLoad() {
+        TODO("Show load")
+    }
+
+    override fun hideLoad() {
+        TODO("Hide load")
+    }
+
+    override fun showMessage(Message: String) {
+        TODO("Toast.makeText()")
     }
 }

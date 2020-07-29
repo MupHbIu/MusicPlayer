@@ -9,13 +9,13 @@ import com.muphbiu.musicplayer.data.Song
 
 class PlayingListDB(context: Context) {
 
-    private val tag = "PlayingNowDBHelper"
+    private val tag = "PlayingListDB"
     private val dbName = "PlayingList"
     private val dbVersion = 1
 
     private var name: String = "name"
     private var location: String = "location"
-    private var dbHelper: DBHelper = DBHelper(context, dbName, null, dbVersion)
+    private var dbHelper: PlayingListDBHelper = PlayingListDBHelper(context, dbName, null, dbVersion)
     private lateinit var db: SQLiteDatabase
 
     private fun connectToBD() {
@@ -38,6 +38,9 @@ class PlayingListDB(context: Context) {
         db.insert(dbName, null, cv)
 
         disconnectBD()
+    }
+    fun addToDB(Song: Song) {
+        addToDB(Song.name, Song.location)
     }
 
     fun getFromDB(): List<Song> {
