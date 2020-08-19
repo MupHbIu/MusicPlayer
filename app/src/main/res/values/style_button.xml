@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/btn_normal</item>
+        <item name="android:textColor">@color/player_btn_color</item>
+        <item name="android:padding">4dp</item>
+    </style>
+</resources>

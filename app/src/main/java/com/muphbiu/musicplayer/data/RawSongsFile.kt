@@ -7,12 +7,12 @@ import java.io.*
 
 class RawSongsFile(context: Context) {
     private val tag = "RawSongsFile"
-    private val fileName =  "AllSongs"
+    private val fileName =  "_AllSongs"
     private lateinit var songsFromSD: ReadSongsFromSD
-    private lateinit var newSongList: List<Song>
+    private lateinit var newSongList: List<File>
 
-    lateinit var fos : FileOutputStream
-    lateinit var fis : FileInputStream
+    private lateinit var fos : FileOutputStream
+    private lateinit var fis : FileInputStream
 
     init {
         try {
@@ -23,7 +23,7 @@ class RawSongsFile(context: Context) {
         }
     }
     private fun tryInit(context: Context) {
-        if (getSongsList(context) == emptyList<Song>() || getSongsList(context) == null) {
+        if (getSongsList(context) == emptyList<Song>()) {
             addSongsToFile(context)
         }
     }
@@ -34,9 +34,9 @@ class RawSongsFile(context: Context) {
         var songLocation = ""
         if (file != emptyList<Song>()) {
             for (line in file) {
-                if (line.substringBefore(':') == id) {
-                    songName = line.substringAfter(":").substringBefore(';')
-                    songLocation = line.substringAfter(';')
+                if (line.substringBefore(';') == id) {
+                    songName = line.substringAfter(";").substringBefore(':')
+                    songLocation = line.substringAfter(':')
                     break
                 }
             }
@@ -48,13 +48,23 @@ class RawSongsFile(context: Context) {
         val file: List<String> = readFile(context)
         if (file != emptyList<Song>()) {
             for (line in file) {
-                val songName: String = line.substringAfter(":").substringBefore(';')
-                val songLocation: String = line.substringAfter(';')
+                val songName: String = line.substringAfter(";").substringBefore(':')
+                val songLocation: String = line.substringAfter(':')
                 songsList.add(Song(songName, songLocation))
             }
         }
         return songsList
     }
+    fun addSongsToFile(context: Context) {
+        songsFromSD = ReadSongsFromSD()
+        newSongList = songsFromSD.getSoundsLocation()
+        var file = ""
+        for ((i, song) in newSongList.withIndex()) {
+            file += "$i;${song.name}:${song.absolutePath}\n"
+        }
+        writeFile(context, file)
+    }
+
     private fun readFile(context: Context): List<String> {
         fis = context.openFileInput(fileName)
         var fileStr: List<String> = mutableListOf()
@@ -69,16 +79,6 @@ class RawSongsFile(context: Context) {
         }
         return fileStr
     }
-
-    fun addSongsToFile(context: Context) {
-        songsFromSD = ReadSongsFromSD()
-        newSongList = songsFromSD.getSoundsLocation()
-        var file = ""
-        for ((i, song) in newSongList.withIndex()) {
-            file += "${i.toString()}:${song.name.toString()};${song.location.toString()}\n"
-        }
-        writeFile(context, file)
-    }
     private fun writeFile(context: Context, string: String) {
         try {
             fos = context.openFileOutput(fileName, MODE_PRIVATE)
@@ -92,7 +92,6 @@ class RawSongsFile(context: Context) {
             e.printStackTrace()
         }
     }
-
     fun deleteFile(context: Context) {
         try {
             fos = context.openFileOutput(fileName, MODE_PRIVATE)

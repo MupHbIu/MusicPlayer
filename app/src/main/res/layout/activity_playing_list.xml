@@ -7,63 +7,10 @@
     android:padding="16dp"
     tools:context=".ui.PlayingListActivity">
 
-  <EditText
-      android:id="@+id/playlistLocation"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:ems="10"
-      android:inputType="textPersonName"
-      android:text="Location"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@+id/playlistGet"
-      app:layout_constraintHorizontal_bias="0.0"
-      app:layout_constraintStart_toStartOf="parent" />
-
-  <EditText
-      android:id="@+id/playlistName"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="12dp"
-      android:ems="10"
-      android:inputType="textPersonName"
-      android:text="Name"
-      app:layout_constraintBottom_toTopOf="@+id/playlistLocation"
-      app:layout_constraintEnd_toStartOf="@+id/playlistAdd"
-      app:layout_constraintHorizontal_bias="0.0"
-      app:layout_constraintStart_toStartOf="parent" />
-
-  <Button
-      android:id="@+id/playlistGet"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Get"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent" />
-
-  <Button
-      android:id="@+id/playlistAdd"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="8dp"
-      android:text="Add"
-      app:layout_constraintBottom_toTopOf="@+id/playlistGet"
-      app:layout_constraintEnd_toEndOf="parent" />
-
-  <Button
-      android:id="@+id/playlistDel"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="16dp"
-      android:text="DELETE"
-      app:layout_constraintBottom_toTopOf="@+id/playlistName"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.0"
-      app:layout_constraintStart_toStartOf="parent" />
-
   <ScrollView
       android:layout_width="0dp"
       android:layout_height="0dp"
-      app:layout_constraintBottom_toTopOf="@+id/playlistDel"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">

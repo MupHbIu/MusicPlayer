@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimaryDark"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/playerDialogNewPlaylistText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimaryDark"
+        android:text="Enter playlist name:"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/playerDialogNewPlaylistEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Playlist name"
+        android:inputType="textPersonName"
+        android:textColor="?attr/colorPrimary"
+        android:textColorHint="?attr/colorControlActivated"
+        android:textColorLink="?attr/colorPrimary"
+        android:textSize="18sp">
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/playerDialogNewPlaylistButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Create"
+        android:textAllCaps="false"
+        android:textSize="18sp" />
+</LinearLayout>

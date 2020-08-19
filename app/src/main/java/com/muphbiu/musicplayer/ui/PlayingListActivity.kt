@@ -20,11 +20,6 @@ import kotlinx.android.synthetic.main.activity_playing_list.*
          setContentView(R.layout.activity_playing_list)
 
          presenter = PlayingListPresenter(this, this)
-
-         playlistGet.setOnClickListener {
-             //presenter.refresh()
-         }
-
      }
      override fun onResume() {
          super.onResume()
@@ -43,8 +38,10 @@ import kotlinx.android.synthetic.main.activity_playing_list.*
          super.onDestroy()
          presenter.activityDestroyed()
      }
-     override fun showMessage(Message: String) {
-         Toast.makeText(this, Message, Toast.LENGTH_SHORT).show()
+
+     // ========== D E F A U L T ==========
+     override fun showMessage(message: String) {
+         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
      }
      override fun showLoad() {
          TODO("Show load")

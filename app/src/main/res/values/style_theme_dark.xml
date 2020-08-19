@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ThemeDark" parent="ThemeLight">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="colorPrimary">@color/colorPrimaryD</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkD</item>
+        <item name="colorAccent">@color/colorAccentD</item>
+        <item name="colorControlNormal">@color/colorControlNormalD</item>
+        <item name="colorControlActivated">@color/colorControlActivatedD</item>
+        <!--        <item name="colorBackgroundFloating">@color/colorBackgroundFloatingD</item>
+
+        <item name="android:itemBackground">@drawable/btn_normal</item>
+
+        <item name="imageButtonStyle">@style/PlayerButton</item>
+        <item name="seekBarStyle">@style/PlayerSeekBar</item>
+        <item name="android:textViewStyle">@style/PlayerTextView</item>
+        <item name="popupMenuStyle">@style/PopupMenu</item>
+        <item name="buttonStyle">@style/ButtonStyle</item>
+        -->
+
+    </style>
+
+</resources>

@@ -4,6 +4,7 @@
     package="com.muphbiu.musicplayer">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,10 +13,14 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/ThemeLight"
         tools:targetApi="q">
-        <activity android:name=".TestActivity"></activity>
-        <activity android:name=".ui.PlayingListActivity"></activity>
+        <activity android:name=".ui.StartActivity"></activity>
+        <activity android:name=".ui.PlaylistActivity" />
+        <activity android:name=".ui.FileExplorerActivity" />
+        <activity android:name=".localTest.PlayerActivity" />
+        <activity android:name=".localTest.TestActivity" />
+        <activity android:name=".ui.PlayingListActivity" />
         <activity android:name=".ui.MusicPlayingActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
