@@ -1,7 +1,7 @@
 package com.muphbiu.musicplayer.base.interfaces
 
-import java.io.File
-
 interface PlaylistAdapterListener {
-    fun itemSelected(item: File)
+    fun itemSelected(position: Int)
+    fun showDialogRename(name: String)
+    fun showDialogDelete(name: String)
 }

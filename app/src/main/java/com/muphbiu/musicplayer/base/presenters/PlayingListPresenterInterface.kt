@@ -3,5 +3,5 @@ package com.muphbiu.musicplayer.base.presenters
 import com.muphbiu.musicplayer.base.BasePresenter
 
 interface PlayingListPresenterInterface : BasePresenter{
-    fun activityOpened()
+
 }

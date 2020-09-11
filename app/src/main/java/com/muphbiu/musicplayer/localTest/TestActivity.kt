@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.muphbiu.musicplayer.R
 import com.muphbiu.musicplayer.data.PlaylistsManager
-import com.muphbiu.musicplayer.data.RawSongsFile
-import com.muphbiu.musicplayer.data.database.PlayingListDB
 import kotlinx.android.synthetic.main.activity_text1.*
 import java.io.File
 

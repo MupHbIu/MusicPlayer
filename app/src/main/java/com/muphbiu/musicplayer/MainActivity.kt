@@ -10,7 +10,6 @@ import android.widget.Toast
 import android.content.pm.PackageManager
 import android.os.Build
 import com.muphbiu.musicplayer.data.RawSongsFile
-import com.muphbiu.musicplayer.localTest.PlayerActivity
 import com.muphbiu.musicplayer.localTest.TestActivity
 import com.muphbiu.musicplayer.ui.FileExplorerActivity
 import com.muphbiu.musicplayer.ui.PlaylistActivity

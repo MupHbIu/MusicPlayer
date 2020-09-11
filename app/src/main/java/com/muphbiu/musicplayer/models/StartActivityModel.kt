@@ -11,8 +11,8 @@ class StartActivityModel(private val presenter: StartActivityPresenterInterface,
     private val manager = PlaylistsManager(context)
 
     // ======= Playlists ==========
-    fun getPlaylist(path: String) : List<File> {
-        return manager.getPlaylist(path)
+    fun getPlaylist(playlistName: String) : List<File> {
+        return manager.getPlaylist(playlistName)
     }
     fun getListOfPlaylist() : List<File> {
         return manager.getListOfPlaylist()
@@ -21,7 +21,7 @@ class StartActivityModel(private val presenter: StartActivityPresenterInterface,
 
     // ======= Files ==========
     fun getFiles(location: String) : List<File> {
-        return readFiles.getDirItems(File(location))
+        return getFiles(File(location))
     }
     fun getFiles(file: File) : List<File> {
         return readFiles.getDirItems(file)
@@ -41,6 +41,12 @@ class StartActivityModel(private val presenter: StartActivityPresenterInterface,
 
     fun createNewPlaylistFile(playlistName: String) : String {
         return manager.createPlaylist(playlistName)
+    }
+    fun renamePlaylist(oldName: String, newName: String): Boolean {
+        return manager.renamePlaylist(oldName, newName)
+    }
+    fun deletePlaylist(playlistName: String) {
+        manager.deletePlaylist(playlistName)
     }
 
     fun addSongToPlaylist(location: String, playlist: String) : Boolean {

@@ -9,18 +9,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.muphbiu.musicplayer.R
 import com.muphbiu.musicplayer.base.fragments.FragmentListInterface
+import com.muphbiu.musicplayer.base.interfaces.DeletePlaylistDialogListener
 import com.muphbiu.musicplayer.base.interfaces.FileExplorerAdapterListener
 import com.muphbiu.musicplayer.base.interfaces.PlaylistAdapterListener
+import com.muphbiu.musicplayer.base.interfaces.PlaylistRenameDialogListener
 import com.muphbiu.musicplayer.ui.adapters.FileExplorerAdapter
 import com.muphbiu.musicplayer.ui.adapters.PlaylistAdapter
 import kotlinx.android.synthetic.main.fragment_list.view.*
 import java.io.File
 
 class FragmentList() : Fragment(),
-    PlaylistAdapterListener, FileExplorerAdapterListener {
+    PlaylistAdapterListener, FileExplorerAdapterListener,
+    PlaylistRenameDialogListener, DeletePlaylistDialogListener{
     private lateinit var activityI: FragmentListInterface
     val KEY_LIST = "LIST"
     val KEY_LIST_ID = "LIST_ID"
+
+    private var deleteName = ""
+    private var renameName = ""
 
     private lateinit var adapterPlaylist: PlaylistAdapter
     private lateinit var adapterFile: FileExplorerAdapter
@@ -59,8 +65,18 @@ class FragmentList() : Fragment(),
     }
 
     // ========== Playlists ==========
-    override fun itemSelected(item: File) {
+    override fun itemSelected(item: Int) {
         activityI.itemSelected(item)
+    }
+    override fun showDialogRename(name: String) {
+        renameName = name
+        val renameDialog = PlaylistRenameDialog(this)
+        renameDialog.show(activity?.supportFragmentManager!!, "RenameDialog")
+    }
+    override fun showDialogDelete(name: String) {
+        deleteName = name
+        val deleteDialog = DeletePlaylistDialog(this)
+        deleteDialog.show(activity?.supportFragmentManager!!, "DialogDelete")
     }
     // ========== Playlists ==========
 
@@ -79,6 +95,16 @@ class FragmentList() : Fragment(),
 
     override fun showFile(file: File) {
         activityI.showFile(file)
+    }
+
+    override fun rename(newName: String) {
+        activityI.renamePlaylist(renameName, newName)
+    }
+    override fun wrongData() {
+        activityI.showMessage("Wrong data!")
+    }
+    override fun delete() {
+        activityI.deletePlaylist(deleteName)
     }
     // ========== Files ==========
 

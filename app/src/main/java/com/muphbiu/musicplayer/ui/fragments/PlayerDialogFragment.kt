@@ -7,10 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.muphbiu.musicplayer.R
 import com.muphbiu.musicplayer.base.interfaces.PlayerDialogFragmentInterface
 import com.muphbiu.musicplayer.base.interfaces.PlayerDialogListener
-import com.muphbiu.musicplayer.base.views.FileExplorerViewInterface
 import com.muphbiu.musicplayer.ui.adapters.PlayerDialogFragmentAdapter
 import kotlinx.android.synthetic.main.fragment_player_dialog.view.*
-import kotlinx.android.synthetic.main.fragment_player_dialog_new_playlist.view.*
+import kotlinx.android.synthetic.main.fragment_player_dialog_edit_text.view.*
 import java.io.File
 
 class PlayerDialogFragment(private val activityInterface: PlayerDialogListener, private val newPlaylist: Boolean):
@@ -22,15 +21,18 @@ class PlayerDialogFragment(private val activityInterface: PlayerDialogListener, 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View
         if(newPlaylist) {
-            view = inflater.inflate(R.layout.fragment_player_dialog_new_playlist, container, false)
-            view.playerDialogNewPlaylistEditText.requestFocus()
+            view = inflater.inflate(R.layout.fragment_player_dialog_edit_text, container, false)
+            view.playerDialogETText.text = "Enter playlist name:"
+            view.playerDialogETEditText.hint = "Playlist name"
+            view.playerDialogETButton.text = "Create"
+            view.playerDialogETEditText.requestFocus()
             dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
-            view.playerDialogNewPlaylistButton.setOnClickListener {
-                if(view.playerDialogNewPlaylistEditText.text.toString() == "" ||
-                    view.playerDialogNewPlaylistEditText.text.toString().startsWith('/')) {
+            view.playerDialogETButton.setOnClickListener {
+                if(view.playerDialogETEditText.text.toString() == "" ||
+                    view.playerDialogETEditText.text.toString().startsWith('/')) {
                     activityInterface.showMessage("Wrong name!")
                 } else {
-                    playlistGot(view.playerDialogNewPlaylistEditText.text.toString())
+                    playlistGot(view.playerDialogETEditText.text.toString())
                 }
             }
         } else {

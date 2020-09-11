@@ -43,14 +43,17 @@ class ReadSongsFromSD {
     fun getDirItems(dir: File) : List<File> {
         val files = mutableListOf<File>()
         try {
-            for(it in dir.listFiles()) {
-                if(!(it.name.toString().startsWith('.') || it.name.toString() == "Android") &&
-                    ((it.isDirectory && isContainMusic(it)) || (!it.isDirectory && it.name.toString().endsWith(ext)))
+            for (it in dir.listFiles()) {
+                if (!(it.name.toString().startsWith('.') || it.name.toString() == "Android") &&
+                    ((it.isDirectory && isContainMusic(it)) || (!it.isDirectory && it.name.toString()
+                        .endsWith(ext)))
                 )
                     files.add(File(it.absolutePath))
             }
-        } catch (e: Exception) { Log.d(tag, e.toString()) }
-        files.sortWith(compareBy( { !it.isDirectory }, { it.name } ))
+        } catch (e: Exception) {
+            Log.d(tag, e.toString())
+        }
+        files.sortWith(compareBy({ !it.isDirectory }, { it.name }))
         return files
     }
     fun isContainMusic(folder: File) : Boolean {

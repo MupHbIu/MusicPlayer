@@ -5,23 +5,35 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_player_round"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_player_round"
         android:supportsRtl="true"
-        android:theme="@style/ThemeLight"
+        android:theme="@style/AppTheme"
         tools:targetApi="q">
-        <activity android:name=".ui.StartActivity"></activity>
+        <activity android:name=".ui.SettingsActivity"></activity>
+
+        <service
+            android:name=".services.PlayingService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver android:name=".services.PlayingReceiver" />
+
+        <activity android:name=".ui.StartActivity" />
         <activity android:name=".ui.PlaylistActivity" />
         <activity android:name=".ui.FileExplorerActivity" />
-        <activity android:name=".localTest.PlayerActivity" />
         <activity android:name=".localTest.TestActivity" />
-        <activity android:name=".ui.PlayingListActivity" />
-        <activity android:name=".ui.MusicPlayingActivity" />
+        <activity android:name=".ui.PlayingListActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".ui.MusicPlayingActivity"
+            android:launchMode="singleTop" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

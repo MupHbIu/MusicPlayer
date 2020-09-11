@@ -13,14 +13,14 @@ class StartActivityPresenter(private val activity: StartActivityViewInterface, c
     private var fileList = mutableListOf<File>()
 
     // ========== Playlists ==========
-    fun getData(playlistPath: String) {
-        if(playlistPath.endsWith(".mp3"))
-            activity.playSong(playlistPath)
+    fun getData(itemPath: String) {
+        if(itemPath.endsWith(".mp3"))
+            activity.playSong(itemPath)
         else {
-            val listPlaylist = if(playlistPath != "")
-                model.getPlaylist(playlistPath)
-            else
+            val listPlaylist = if(itemPath == "/")
                 model.getListOfPlaylist()
+            else
+                model.getPlaylist(File(itemPath).name)
             activity.updatePlaylist(listPlaylist)
             activity.updatePlaylistView()
         }
@@ -69,6 +69,12 @@ class StartActivityPresenter(private val activity: StartActivityViewInterface, c
     }
     fun createNewPlaylist(playlistName: String) : String {
         return model.createNewPlaylistFile(playlistName)
+    }
+    fun renamePlaylist(oldName: String, newName: String): Boolean {
+        return model.renamePlaylist(oldName, newName)
+    }
+    fun deletePlaylist(name: String) {
+        model.deletePlaylist(name)
     }
     // ========== Files ==========
 

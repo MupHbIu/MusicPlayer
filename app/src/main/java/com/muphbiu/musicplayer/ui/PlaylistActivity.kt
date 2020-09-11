@@ -45,14 +45,19 @@ class PlaylistActivity : AppCompatActivity(), PlaylistActivityViewInterface,
         fragmentListRecyclerView.adapter = adapter
     }
 
-    override fun itemSelected(item: File) {
+    override fun itemSelected(item: Int) {
 
-        showMessage(item.name)
+        showMessage(files[item].name)
     }
 
-    fun startPlaylist() {
 
+    override fun showDialogRename(name: String) {
+        TODO("Not yet implemented")
     }
+    override fun showDialogDelete(name: String) {
+        TODO("Not yet implemented")
+    }
+
 
 
     // ========== D E F A U L T ==========

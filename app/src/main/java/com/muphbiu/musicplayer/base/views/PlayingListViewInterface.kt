@@ -1,8 +1,10 @@
 package com.muphbiu.musicplayer.base.views
 
 import com.muphbiu.musicplayer.base.BaseView
-import com.muphbiu.musicplayer.data.Song
+import java.io.File
 
 interface PlayingListViewInterface : BaseView {
-    fun showPlayingList(SongList: List<Song>)
+    fun setPlaylistPath(playlistPath: String)
+    fun setPlaylist(playlist: List<File>)
+    fun updatePlaylist()
 }

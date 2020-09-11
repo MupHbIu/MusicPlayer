@@ -7,7 +7,7 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/playerDialogNewPlaylistText"
+        android:id="@+id/playerDialogETText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimaryDark"
@@ -16,7 +16,7 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/playerDialogNewPlaylistEditText"
+        android:id="@+id/playerDialogETEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -32,7 +32,7 @@
     </EditText>
 
     <Button
-        android:id="@+id/playerDialogNewPlaylistButton"
+        android:id="@+id/playerDialogETButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

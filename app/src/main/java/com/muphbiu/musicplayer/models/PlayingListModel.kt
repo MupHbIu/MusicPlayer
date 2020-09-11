@@ -2,14 +2,14 @@ package com.muphbiu.musicplayer.models
 
 import android.content.Context
 import com.muphbiu.musicplayer.base.models.PlayingListModelInterface
-import com.muphbiu.musicplayer.data.Song
-import com.muphbiu.musicplayer.data.database.PlayingListDB
+import com.muphbiu.musicplayer.data.PlaylistsManager
+import java.io.File
 
 class PlayingListModel(context: Context) : PlayingListModelInterface {
 
-    private val playingList: PlayingListDB = PlayingListDB(context)
+    private val manager = PlaylistsManager(context)
 
-    override fun loadPlayingList(): List<Song> {
-        return playingList.getFromDB()
+    fun getPlaylist(playlistPath: String) : List<File> {
+        return manager.getPlaylist(File(playlistPath).name)
     }
 }

@@ -5,9 +5,9 @@ import java.io.*
 
 class PlaylistsManager(private val context: Context) {
 
-    private val DEFAULT_DIR_PATH : String
-    private val FILE_ALLSONGS_NAME = "_AllSongs"
-    private val PLAYLIST_PLAYING_NOW = "_PlayingNow"
+    val DEFAULT_DIR_PATH : String
+    val FILE_ALLSONGS_NAME = "_AllSongs"
+    val PLAYLIST_PLAYING_NOW = "_PlayingNow"
 
     init {
         DEFAULT_DIR_PATH = context.filesDir.toString()
@@ -22,15 +22,21 @@ class PlaylistsManager(private val context: Context) {
         return playlists
     }
 
-    fun getPlaylist(playlistPath: String) : List<File> {
+    fun getPlaylist(playlistName: String) : List<File> {
         val listOfSongs = mutableListOf<File>()
-        if(playlistPath != "$DEFAULT_DIR_PATH/$FILE_ALLSONGS_NAME") {
-            val file = readFile(playlistPath)
+        if(playlistName != "$DEFAULT_DIR_PATH/$FILE_ALLSONGS_NAME") {
+            val file = readFile(playlistName)
             if(file != emptyList<String>())
                 for(line in file)
                     listOfSongs.add(File(line.substringAfter(':')))
         }
         return listOfSongs
+    }
+    fun getPlaylistPlayingNow() : List<File> {
+        var list = getPlaylist("$DEFAULT_DIR_PATH/$PLAYLIST_PLAYING_NOW")
+        if(list == emptyList<File>())
+            list = getPlaylist("$DEFAULT_DIR_PATH/$FILE_ALLSONGS_NAME")
+        return list
     }
     fun getPlaylistSize(playlistPath: String) : Int{
         return getPlaylist(playlistPath).size
@@ -56,18 +62,29 @@ class PlaylistsManager(private val context: Context) {
                 ""
         } else return ""
     }
-    fun deletePlaylist(playlistPath: String) {
-        if (playlistPath != "$DEFAULT_DIR_PATH/$FILE_ALLSONGS_NAME")
-            if(playlistPath == "$DEFAULT_DIR_PATH/$PLAYLIST_PLAYING_NOW")
-                writeFile(playlistPath, "")
-            else
-                deleteFile(context, playlistPath)
+    fun renamePlaylist(playlistNameOld: String, playlistNameNew: String) : Boolean {
+        return if (!(playlistNameNew == FILE_ALLSONGS_NAME || playlistNameNew == PLAYLIST_PLAYING_NOW)) {
+            val oldFileData = readFile(playlistNameOld)
+            var oldFileDataString = ""
+            for(str in oldFileData)
+                oldFileDataString += "$str\n"
+            writeFile("${DEFAULT_DIR_PATH}/$playlistNameNew", oldFileDataString)
+            deletePlaylist(playlistNameOld)
+            true
+        } else false
+    }
+    fun deletePlaylist(playlistName: String) {
+        if (playlistName != FILE_ALLSONGS_NAME)
+            if(playlistName == PLAYLIST_PLAYING_NOW) {
+                writeFile(playlistName, "")
+            } else
+                deleteFile(context, playlistName)
     }
 
-    private fun readFile(playlistPath: String) : List<String> {
+    private fun readFile(playlistName: String) : List<String> {
         var fileStr: List<String> = mutableListOf()
         try {
-            val reader = FileReader("${DEFAULT_DIR_PATH}/$playlistPath")
+            val reader = FileReader("${DEFAULT_DIR_PATH}/$playlistName")
             val br = BufferedReader(reader)
             fileStr = br.readLines()
             br.close()

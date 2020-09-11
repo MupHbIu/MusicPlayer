@@ -1,10 +1,13 @@
 package com.muphbiu.musicplayer.ui
 
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentTransaction
+import androidx.preference.PreferenceManager
 import com.muphbiu.musicplayer.R
 import com.muphbiu.musicplayer.base.fragments.FragmentBottomInterface
 import com.muphbiu.musicplayer.base.fragments.FragmentListInterface
@@ -22,37 +25,71 @@ class StartActivity : AppCompatActivity(), StartActivityViewInterface,
     private lateinit var presenter: StartActivityPresenter
     private lateinit var dialog: PlayerDialogFragment
     private val loadDialog = LoadDialogFragment()
+    private var themeNow = false
 
     private var listId: Int = 0
     private var back_pressed: Long = 0
     private var isPlaying = false
 
     private var files = mutableListOf<File>()
-    private lateinit var viewFolder: File
+    private var viewFolder: File? = null
 
     private var playlists = mutableListOf<File>()
     private var viewPlaylist: File? = null
+    private var itemSelected = 0
     private var songsToPlaylist = ""
 
     private lateinit var fragmentTop: FragmentTop
     private lateinit var fragmentList: FragmentList
     private lateinit var fragmentBottom: FragmentBottom
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
 
+        outState.putInt("LIST_ID", listId)
+        outState.putString("VIEW_FOLDER", viewFolder?.absolutePath ?: "/")
+        outState.putString("VIEW_PLAYLIST", viewPlaylist?.absolutePath ?: "/")
+        outState.putStringArrayList("FILES_ARRAY", filesToStrings(files))
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        when(resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
+            Configuration.UI_MODE_NIGHT_NO -> themeNow = false
+            Configuration.UI_MODE_NIGHT_YES -> themeNow = true
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> themeNow = false
+        }
+
+        if(getSharedPreferences(SettingsActivity.APP_PREFERENCES, MODE_PRIVATE).getBoolean(SettingsActivity.DARK_THEME, false) != themeNow)
+            if(getSharedPreferences(SettingsActivity.APP_PREFERENCES, MODE_PRIVATE).getBoolean(SettingsActivity.DARK_THEME, false))
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            else
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_fragments)
         presenter = StartActivityPresenter(this, this)
-        presenter.getFileList(getLocationToSecondDir())
-        viewFolder = File(getLocationToSecondDir())
 
         listId = savedInstanceState?.getInt("LIST_ID") ?: 0
+        viewPlaylist = File(savedInstanceState?.getString("VIEW_PLAYLIST", "/") ?: "/")
+        viewFolder = if(savedInstanceState?.getString("VIEW_FOLDER", "/") ?: "/" == "/")
+            File(getLocationToSecondDir())
+        else
+            File(savedInstanceState?.getString("VIEW_FOLDER", "/") ?: "/")
+        if(savedInstanceState != null)
+            files = stringsToFiles(savedInstanceState.getStringArrayList("FILES_ARRAY")).toMutableList()
+
         when (listId) {
             0 -> {
+                mainFragmentRadioPlaylists.isChecked = true
+                mainFragmentRadioFiles.isChecked = false
                 updateTopFragment("Playlist")
-                presenter.getData("")
+                presenter.getData(viewPlaylist?.absolutePath ?: "/")
             }
             1 -> {
+                mainFragmentRadioFiles.isChecked = true
+                mainFragmentRadioPlaylists.isChecked = false
+                if(files == mutableListOf<File>())
+                    presenter.getFileList(viewFolder?.absolutePath ?: getLocationToSecondDir())
                 updateTopFragment("Files")
                 updateListFragment(filesToStrings(files), listId)
             }
@@ -63,12 +100,14 @@ class StartActivity : AppCompatActivity(), StartActivityViewInterface,
             if(listId != 0) {
                 listId = 0
                 updateTopFragment("Playlist")
-                presenter.getData(viewPlaylist?.absolutePath ?: "")
+                presenter.getData(viewPlaylist?.absolutePath ?: "/")
             }
         }
         mainFragmentRadioFiles.setOnClickListener {
             if(listId != 1) {
                 listId = 1
+                if(files == mutableListOf<File>())
+                    presenter.getFileList(viewFolder?.absolutePath ?: getLocationToSecondDir())
                 updateTopFragment("Files")
                 updateListFragment(filesToStrings(files), listId)
             }
@@ -77,17 +116,17 @@ class StartActivity : AppCompatActivity(), StartActivityViewInterface,
 
     override fun onBackPressed() {
         when (listId) {
-            0 -> when(viewPlaylist?.absolutePath ?: "") {
-                "" -> backExit()
+            0 -> when(viewPlaylist?.absolutePath ?: "/") {
+                "/" -> backExit()
                 else -> {
-                    viewPlaylist = null
-                    presenter.getData("")
+                    viewPlaylist = File("/")
+                    presenter.getData(viewPlaylist?.absolutePath ?: "/")
                 }
             }
-            1 -> when (viewFolder.absolutePath) {
+            1 -> when (viewFolder?.absolutePath) {
                 getLocationToSecondDir() -> backExit()
-                getLocationToMainDir() -> showFolder(File(File(viewFolder.parent).parent))
-                else -> showFolder(File(viewFolder.parent))
+                getLocationToMainDir() -> showFolder(File(File(viewFolder?.parent).parent))
+                else -> showFolder(File(viewFolder?.parent))
             }
             else -> backExit()
         }
@@ -141,15 +180,14 @@ class StartActivity : AppCompatActivity(), StartActivityViewInterface,
     // ========== Callbacks from fragments ==========
     override fun goBack() {
         super.onBackPressed()
-        showMessage("Back")
     }
 
     override fun goMenu() {
-        showMessage("Menu")
+        startActivity(Intent(this, SettingsActivity::class.java))
     }
 
     override fun openPlayer() {
-        showMessage("Opening player...")
+        startActivity(Intent(this, MusicPlayingActivity::class.java))
     }
 
     override fun playPrevious() {
@@ -173,12 +211,22 @@ class StartActivity : AppCompatActivity(), StartActivityViewInterface,
             filesPath.add(file.absolutePath)
         return ArrayList(filesPath)
     }
+    private fun stringsToFiles(filesPath: ArrayList<String>?) : List<File> {
+        val files = mutableListOf<File>()
+        if (filesPath != null) {
+            for(path in filesPath)
+                files.add(File(path))
+        }
+        return files
+    }
 
     // ========== Callbacks playlist ==========
-    override fun itemSelected(item: File) {
-        if(!item.name.endsWith(".mp3"))
-            viewPlaylist = item
-        presenter.getData(item.name)
+    override fun itemSelected(item: Int) {
+        if(viewPlaylist?.absolutePath ?: "/" == "/")
+            viewPlaylist = playlists[item]
+        else
+            itemSelected = item
+        presenter.getData(playlists[item].name)
     }
     override fun updatePlaylistView() {
         val list = filesToStrings(playlists)
@@ -192,7 +240,8 @@ class StartActivity : AppCompatActivity(), StartActivityViewInterface,
     override fun playSong(songPath: String) {
         val intent = Intent(this, MusicPlayingActivity::class.java)
         intent.putExtra("SONG_PATH", songPath)
-        intent.putExtra("PLAYLIST", viewPlaylist)
+        intent.putExtra("PLAYLIST", viewPlaylist?.absolutePath ?: "")
+        intent.putExtra("ITEM", itemSelected)
         startActivity(intent)
     }
     // ========== Callbacks playlist ==========
@@ -220,17 +269,16 @@ class StartActivity : AppCompatActivity(), StartActivityViewInterface,
         viewFolder = folder
         getNewFileList(folder.absolutePath)
     }
-
     override fun showFile(file: File) {
         presenter.openFile(file)
     }
+
     override fun showAddToPlayList(location: String) {
         dialog = PlayerDialogFragment(this, false)
         dialog.addPlaylists(presenter.getListPlaylists())
         dialog.show(supportFragmentManager, "playlists")
         songsToPlaylist = location
     }
-
     override fun showCreateNewPlaylistDialog() {
         dialog = PlayerDialogFragment(this, true)
         dialog.show(supportFragmentManager, "newPlaylist")
@@ -251,10 +299,27 @@ class StartActivity : AppCompatActivity(), StartActivityViewInterface,
         else
             showMessage("Error! Song not added")
     }
+
+
+    override fun renamePlaylist(oldName: String, newName: String) {
+        if(presenter.renamePlaylist(oldName, newName)) {
+            showMessage("Playlist $oldName renamed to $newName")
+            presenter.getData(viewPlaylist?.absolutePath ?: "")
+        }
+        else
+            showMessage("Error")
+    }
+    override fun deletePlaylist(name: String) {
+        presenter.deletePlaylist(name)
+        presenter.getData(viewPlaylist?.absolutePath ?: "")
+        showMessage("Playlist $name deleted")
+    }
+
     // ========== Callbacks files ==========
 
     // ========== D E F A U L T ==========
     override fun showLoad() {
+
         loadDialog.isCancelable = false
         loadDialog.show(supportFragmentManager, "LoadDialog")
     }
