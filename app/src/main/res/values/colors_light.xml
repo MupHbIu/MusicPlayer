@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryL">#000000</color> <!-- Button Default -->
+    <color name="colorPrimaryDarkL">#FFFFFF</color>
+    <color name="colorAccentL">#000000</color>
+    <color name="colorControlNormalL">#C8C8C8</color>
+    <color name="colorControlActivatedL">#FF646464</color> <!-- Button Clicked -->
+    <color name="colorBackgroundFloatingL">#FFF</color>
+
+</resources>
